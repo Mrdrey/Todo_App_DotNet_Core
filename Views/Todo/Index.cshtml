@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Todo_App.DTOs.TodoItemDto>
+
+@{
+    ViewData["Title"] = "Todo";
+}
+
+<h1>Todo Page</h1>
+<table class="table-responsive table-bordered table-responsive-md">
+   <thead>
+       <tr>
+           <td>Title</td>
+           <td>Is Completed</td>
+       </tr>
+   </thead>
+   <tbody>
+
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.IsCompleted</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="2">No items found.</td></tr>
+        }
+   </tbody>
+</table>
+
+<a class="btn btn-outline-primary shadow mt-3" asp-action="AddTodo" asp-area="" asp-controller="Todo">Add</a>
