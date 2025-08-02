@@ -1,3 +1,8 @@
 bin/
 obj/
 .vs/
+.vscode/
+*.db
+*.log
+*.DS_Store
+*.suo

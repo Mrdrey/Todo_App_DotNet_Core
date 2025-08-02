@@ -91,10 +91,38 @@ public class TodoService : ITodoService
         }
 
     }
-
-    public Task<ServiceResult<TodoItemDto>> GetByIdAsync(int id)
+    //done
+    public async  Task<ServiceResult<TodoItemDto>> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            if (id == 0)
+            {
+                return new ServiceResult<TodoItemDto>
+                {
+                    IsSuccess = false,
+                    Message = $"Failed to Get {id} Todo"
+                };
+            }
+            var todo = await _repository.GetById(id);
+
+            return new ServiceResult<TodoItemDto>
+            {
+                IsSuccess = true,
+                Message = "Success"
+            };
+
+        }
+        catch(Exception ex)
+        {
+            return new ServiceResult<TodoItemDto>
+            {
+                IsSuccess = false,
+                Message = ex.Message
+            };
+        }
+
+
     }
     //done
     public async  Task<ServiceResult> InsertAsync(TodoItemDto itemDto)
@@ -140,9 +168,40 @@ public class TodoService : ITodoService
 
 
     }
-
-    public Task<ServiceResult> UpdateAsync(TodoItemDto item)
+    //done
+    public async Task<ServiceResult> UpdateAsync(TodoItemDto item)
     {
-        throw new NotImplementedException();
+        try
+        {
+            if(item != null)
+            {
+                var todos = new TodoItem
+                {
+                    Title = item.Title,
+                    IsCompleted = item.IsCompleted,
+                };
+                await _repository.Update(todos);
+                return new ServiceResult<TodoItemDto>
+                {
+                    IsSuccess = true,
+                    Message = $"{item.Title} Updated Successfully!"
+                };
+            }
+            return new ServiceResult<TodoItemDto>
+            {
+                IsSuccess = false,
+                Message = "Failed to Update."
+            };
+
+        }catch(Exception ex)
+        {
+            _logger.LogError(ex.Message);
+
+            return new ServiceResult<TodoItemDto>
+            {
+                IsSuccess = false,
+                Message = ex.Message
+            };
+        }
     }
 }
